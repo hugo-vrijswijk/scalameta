@@ -898,6 +898,12 @@ class SyntacticSuite extends scala.meta.tests.parsers.ParseSuite {
     checkTree(q"""x _""", "x _")
   }
 
+  test("#1917 params in lambda constructor param") {
+    checkTree(q"new Foo { (a: Int) => a + 1 }", "new Foo { (a: Int) => a + 1 }")
+    checkTree(q"new Foo((a: Int) => a + 1)", "new Foo((a: Int) => a + 1)")
+    checkTree(q"Foo((a: Int) => a + 1)", "Foo((a: Int) => a + 1)")
+  }
+
   def checkTree(original: Tree, expected: String): Unit = {
     assert(original.syntax == expected)
     assert(original.structure == (expected.parse[Stat]).get.structure)
